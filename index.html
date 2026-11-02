@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d19">
+<title>ßroX AI</title>
+
+<style>
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  min-height:100vh;
+  background:#080d19;
+  color:#f5f7ff;
+  font-family:Arial,sans-serif;
+}
+
+header {
+  height:68px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #20283a;
+}
+
+.brand { display:flex; align-items:center; gap:11px; }
+
+.logo {
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-size:24px;
+  background:linear-gradient(135deg,#58d5ff,#805aff);
+  box-shadow:0 0 20px #537cff66;
+}
+
+.brand strong { font-size:20px; }
+.status { color:#8190a9; font-size:11px; }
+
+main {
+  width:min(700px,100%);
+  margin:auto;
+  padding:75px 18px 40px;
+  text-align:center;
+}
+
+h1 { font-size:35px; margin-bottom:12px; }
+
+.gradient {
+  background:linear-gradient(90deg,#69d9ff,#a28aff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.subtitle {
+  color:#91a0b8;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.comet {
+  margin:20px auto;
+  width:76px;
+  height:76px;
+  display:grid;
+  place-items:center;
+  font-size:38px;
+  border-radius:50%;
+  background:radial-gradient(circle,#334d91,#151d37 65%);
+  box-shadow:0 0 35px #527dff55;
+}
+
+.composer {
+  margin-top:27px;
+  padding:14px;
+  background:#111a2b;
+  border:1px solid #35415a;
+  border-radius:20px;
+  text-align:left;
+}
+
+textarea {
+  width:100%;
+  min-height:90px;
+  resize:vertical;
+  background:transparent;
+  border:0;
+  outline:none;
+  color:white;
+  font-family:inherit;
+  font-size:15px;
+}
+
+textarea::placeholder { color:#77859e; }
+
+.controls {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.tools { display:flex; align-items:center; gap:9px; }
+
+.tool {
+  width:39px;
+  height:39px;
+  border:1px solid #35415a;
+  border-radius:11px;
+  background:#1b2940;
+  color:#a9c6ff;
+  font-size:19px;
+  display:grid;
+  place-items:center;
+  padding:0;
+}
+
+.tool.active {
+  background:#273c68;
+  border-color:#80a5ff;
+  color:white;
+}
+
+#send {
+  border:0;
+  padding:12px 20px;
+  border-radius:12px;
+  color:white;
+  background:linear-gradient(100deg,#427eff,#855dff);
+  font-weight:bold;
+}
+
+#send:disabled { opacity:.5; }
+
+#fileInput { display:none; }
+
+#attachments {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:8px 0;
+}
+
+.file {
+  padding:7px 10px;
+  border:1px solid #35415a;
+  border-radius:9px;
+  background:#1b2940;
+  color:#c8d8f4;
+  font-size:11px;
+  overflow-wrap:anywhere;
+}
+
+#voiceStatus {
+  display:none;
+  color:#80b8ff;
+  font-size:12px;
+  margin-top:10px;
+}
+
+#result {
+  display:none;
+  margin-top:22px;
+  padding:18px;
+  background:#111a2b;
+  border:1px solid #29344a;
+  border-radius:16px;
+  text-align:left;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+
+#result a { color:#8ac5ff; }
+
+footer {
+  margin-top:50px;
+  color:#65738c;
+  font-size:11px;
+}
+
+@media(max-width:450px) {
+  main { padding-top:50px; }
+  h1 { font-size:29px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div>
+      <strong>ßroX AI</strong><br>
+      <span class="status">INTELLIGENCE REIMAGINED</span>
+    </div>
+  </div>
+  <span class="status">V1.0</span>
+</header>
+
+<main>
+
+<div class="comet">✦</div>
+
+<h1>Discover more with <span class="gradient">ßroX</span></h1>
+
+<p class="subtitle">
+One intelligence. Endless possibilities.<br>
+What would you like to explore today?
+</p>
+
+<div class="composer">
+
+<textarea id="prompt"
+placeholder="Ask anything, research, write or create..."></textarea>
+
+<div id="attachments"></div>
+
+<input type="file" id="fileInput" multiple
+accept="image/*,.pdf,.txt,.doc,.docx">
+
+<div class="controls">
+
+<div class="tools">
+
+<button class="tool" id="attachBtn"
+type="button" title="Attach files"
+aria-label="Attach files">📎</button>
+
+<button class="tool" id="voiceBtn"
+type="button" title="Voice input"
+aria-label="Start voice input">🎙</button>
+
+</div>
+
+<button id="send" type="button">↑</button>
+
+</div>
+
+<div id="voiceStatus">Listening...</div>
+
+</div>
+
+<div id="result"></div>
+
+<footer>
+ßroX AI · Built for discovery and creativity
+</footer>
+
+</main>
+
+<script>
+
+const promptBox = document.getElementById("prompt");
+const result = document.getElementById("result");
+const fileInput = document.getElementById("fileInput");
+const attachBtn = document.getElementById("attachBtn");
+const voiceBtn = document.getElementById("voiceBtn");
+const voiceStatus = document.getElementById("voiceStatus");
+const sendBtn = document.getElementById("send");
+const attachments = document.getElementById("attachments");
+
+let selectedFiles = [];
+let recognition = null;
+let isListening = false;
+
+// ATTACHMENTS
+
+attachBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", () => {
+  const newFiles = Array.from(fileInput.files);
+
+  for (const file of newFiles) {
+    if (file.size > 10 * 1024 * 1024) {
+      alert(file.name + " exceeds the 10 MB limit.");
+      continue;
+    }
+
+    if (!selectedFiles.some(f =>
+      f.name === file.name &&
+      f.size === file.size
+    )) {
+      selectedFiles.push(file);
+    }
+  }
+
+  renderFiles();
+  fileInput.value = "";
+});
+
+function renderFiles() {
+  attachments.replaceChildren();
+
+  selectedFiles.forEach((file,index) => {
+    const item = document.createElement("span");
+    item.className = "file";
+    item.textContent =
+      "📄 " + file.name + " ";
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "×";
+    remove.style.cssText =
+      "background:none;color:white;padding:0 4px";
+
+    remove.onclick = () => {
+      selectedFiles.splice(index,1);
+      renderFiles();
+    };
+
+    item.appendChild(remove);
+    attachments.appendChild(item);
+  });
+}
+
+// VOICE INPUT
+
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = "en-IN";
+
+  recognition.onstart = () => {
+    isListening = true;
+    voiceBtn.classList.add("active");
+    voiceStatus.style.display = "block";
+    voiceStatus.textContent = "Listening... Speak now";
+  };
+
+  recognition.onresult = (event) => {
+    let transcript = "";
+
+    for (let i = 0; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+    }
+
+    promptBox.value = transcript;
+  };
+
+  recognition.onerror = (event) => {
+    voiceStatus.textContent =
+      "Voice error: " + event.error;
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    voiceBtn.classList.remove("active");
+    voiceStatus.style.display = "none";
+  };
+}
+
+voiceBtn.addEventListener("click", () => {
+  if (!recognition) {
+    alert("Voice recognition is not supported in this browser. Try Chrome.");
+    return;
+  }
+
+  if (isListening) {
+    recognition.stop();
+  } else {
+    recognition.start();
+  }
+});
+
+// BASIC REQUEST DETECTION
+
+function analyseRequest(text) {
+  const q = text.toLowerCase();
+
+  if (/\b(generate|create|draw|make)\b.*\b(image|picture|photo|art)\b/.test(q) ||
+      /\b(image|picture|photo)\b.*\b(of|showing)\b/.test(q)) {
+    return "image";
+  }
+
+  if (/\b(research|latest|news|sources|compare|find information|look up)\b/.test(q)) {
+    return "research";
+  }
+
+  if (/\b(write|draft|compose|essay|article|email|story|poem|proposal)\b/.test(q)) {
+    return "writing";
+  }
+
+  return "chat";
+}
+
+// SEND REQUEST
+
+sendBtn.addEventListener("click", submitPrompt);
+
+async function submitPrompt() {
+  const text = promptBox.value.trim();
+
+  if (!text && selectedFiles.length === 0) {
+    alert("Enter a message or attach a file.");
+    return;
+  }
+
+  const intent = analyseRequest(text);
+
+  result.style.display = "block";
+
+  result.textContent =
+    "ßroX detected your request: " + intent +
+    ". Engine connection is coming soon.";
+
+  if (intent === "research" && text) {
+    const url = "https://duckduckgo.com/?q=" +
+      encodeURIComponent(text);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Search DuckDuckGo ↗";
+
+    result.appendChild(document.createElement("br"));
+    result.appendChild(link);
+  }
+
+  if (selectedFiles.length > 0) {
+    const note = document.createElement("p");
+    note.textContent =
+      selectedFiles.length +
+      " attachment(s) selected. File processing will be connected later.";
+    result.appendChild(note);
+  }
+}
+
+</script>
+
+</body>
+  </html>
+  
